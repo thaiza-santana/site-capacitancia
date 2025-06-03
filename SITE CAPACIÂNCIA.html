@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capacitância Eletrostática - Aprenda e Jogue!</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4fdf7;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(90deg, #4caf50, #2e7d32);
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      background: #e8f5e9;
+      padding: 1em;
+    }
+    nav button {
+      padding: 0.5em 1em;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: #a5d6a7;
+      border: none;
+      border-radius: 5px;
+    }
+    section {
+      max-width: 800px;
+      margin: 2em auto;
+      padding: 1em;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2e7d32;
+    }
+    label, select, input {
+      display: block;
+      margin: 0.5em 0;
+    }
+    .resultado, .quiz-feedback {
+      font-weight: bold;
+      color: #d32f2f;
+      margin-top: 1em;
+    }
+    .quiz-pergunta {
+      margin-top: 1em;
+      display: none;
+    }
+    .quiz-pergunta.active {
+      display: block;
+    }
+    .planet-img {
+      width: 200px;
+      margin: 1em auto;
+      display: block;
+    }
+    .botao {
+      background: #43a047;
+      color: white;
+      padding: 0.7em 1.5em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Capacitância Eletrostática de Condutores Isolados</h1>
+  </header>
+
+  <nav>
+    <button onclick="scrollToSection('teoria')">Ir para Teoria</button>
+    <button onclick="scrollToSection('jogo')">Ir direto ao Game</button>
+    <button onclick="scrollToSection('quiz')">Ir para Quiz</button>
+    <button onclick="scrollToTop()">Voltar ao Topo</button>
+  </nav>
+
+  <section id="teoria">
+    <h2>📚 Teoria Resumida</h2>
+    <p>A capacitância de um condutor isolado mede sua capacidade de armazenar carga elétrica em relação ao potencial que essa carga gera. A capacitância depende da geometria do condutor e do meio ao redor.</p>
+    <ul>
+      <li><strong>Definição Geral:</strong> C = Q / V</li>
+      <li><strong>Capacitância da Esfera:</strong> C = 4πε₀R</li>
+      <li><strong>Cilindro Longo:</strong> C = (2πε₀L) / ln(b/a)</li>
+      <li><strong>Placas Paralelas:</strong> C = ε₀A / d</li>
+    </ul>
+    <p>Onde:</p>
+    <ul>
+      <li>ε₀ = Permissividade do vácuo ≈ 8,854 x 10⁻¹² F/m</li>
+      <li>Q = carga em Coulombs</li>
+      <li>V = potencial em Volts</li>
+    </ul>
+    <p>Fatores como a presença de um material dielétrico ou proximidade de outro condutor alteram a capacitância. Condutores isolados têm capacitância intrínseca baseada apenas na forma e ambiente.</p>
+  </section>
+
+  <section id="jogo">
+    <h2>🎮 Mini Jogo: Descubra a Capacitância</h2>
+    <label>Formato do Condutor:</label>
+    <select id="formato">
+      <option value="esfera">Esfera</option>
+      <option value="cilindro">Cilindro</option>
+      <option value="placa">Placas Paralelas</option>
+    </select>
+
+    <label>Tamanho:</label>
+    <select id="tamanho">
+      <option value="pequeno">Pequeno</option>
+      <option value="medio">Médio</option>
+      <option value="grande">Grande</option>
+    </select>
+
+    <label>Ambiente:</label>
+    <select id="ambiente">
+      <option value="vácuo">Vácuo</option>
+      <option value="ar">Ar</option>
+      <option value="condutor">Perto de outro condutor</option>
+    </select>
+
+    <div id="parametros">
+      <label>Raio (m): <input type="number" id="raio" value="0.05"></label>
+      <label>Comprimento (m) - para cilindro: <input type="number" id="comprimento" value="1"></label>
+      <label>Distância (m) - placas: <input type="number" id="distancia" value="0.01"></label>
+      <label>Área (m²) - placas: <input type="number" id="area" value="0.1"></label>
+    </div>
+    <button class="botao" onclick="calcularCapacitancia()">Calcular</button>
+    <div class="resultado" id="resultado"></div>
+  </section>
+
+  <section id="quiz">
+    <h2>🌍 Quiz: Carregue seu Planeta</h2>
+    <div class="quiz-pergunta active" id="q1">
+      <p>1. Qual a unidade de capacitância no SI?</p>
+      <button onclick="verificarResposta(this, 'Farad', 'q1', 'q2')">Farad</button>
+      <button onclick="verificarResposta(this, 'Farad', 'q1', 'q2')">Volt</button>
+      <button onclick="verificarResposta(this, 'Farad', 'q1', 'q2')">Coulomb</button>
+    </div>
+    <div class="quiz-pergunta" id="q2">
+      <p>2. Qual fórmula representa a capacitância de uma esfera?</p>
+      <button onclick="verificarResposta(this, 'C = 4πɛ₀R', 'q2', 'q3')">C = 4πɛ₀R</button>
+      <button onclick="verificarResposta(this, 'C = 4πɛ₀R', 'q2', 'q3')">C = Q/V</button>
+      <button onclick="verificarResposta(this, 'C = 4πɛ₀R', 'q2', 'q3')">C = ɛ₀A/d</button>
+    </div>
+    <div class="quiz-pergunta" id="q3">
+      <p>3. A capacitância depende de qual fator físico no caso de um condutor isolado?</p>
+      <button onclick="verificarResposta(this, 'Geometria', 'q3', '')">Geometria</button>
+      <button onclick="verificarResposta(this, 'Geometria', 'q3', '')">Corrente elétrica</button>
+      <button onclick="verificarResposta(this, 'Geometria', 'q3', '')">Frequência</button>
+    </div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <img src="https://files.oaiusercontent.com/file-hMUIrV9d5tR8lBl9Qhuu4Rt1?se=2025-06-01T21%3A36%3A16Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&sig=v6zjZTuvAMQ7zu4RksLTKGVt6yMBjjr3HbFd9FwTPnU%3D" id="planeta" class="planet-img" style="display:none">
+  </section>
+
+  <script>
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function calcularCapacitancia() {
+      const eps0 = 8.854e-12;
+      const formato = document.getElementById('formato').value;
+      const ambiente = document.getElementById('ambiente').value;
+
+      let fatorAmbiente = 1;
+      if (ambiente === 'ar') fatorAmbiente = 1.0006;
+      if (ambiente === 'condutor') fatorAmbiente = 2;
+
+      let C = 0;
+      if (formato === 'esfera') {
+        const R = parseFloat(document.getElementById('raio').value);
+        C = 4 * Math.PI * eps0 * R * fatorAmbiente;
+      } else if (formato === 'cilindro') {
+        const L = parseFloat(document.getElementById('comprimento').value);
+        const a = parseFloat(document.getElementById('raio').value);
+        const b = a * 2;
+        C = (2 * Math.PI * eps0 * L) / Math.log(b / a) * fatorAmbiente;
+      } else if (formato === 'placa') {
+        const A = parseFloat(document.getElementById('area').value);
+        const d = parseFloat(document.getElementById('distancia').value);
+        C = (eps0 * A / d) * fatorAmbiente;
+      }
+
+      document.getElementById('resultado').innerText =
+        `Capacitância: ${(C * 1e12).toFixed(2)} pF`;
+    }
+
+    function verificarResposta(btn, respostaCerta, idAtual, idProx) {
+      const feedback = document.getElementById("quiz-feedback");
+      if (btn.textContent === respostaCerta) {
+        feedback.textContent = "✔️ Correto! Seu planeta está carregando...";
+        document.getElementById("planeta").style.display = "block";
+        document.getElementById(idAtual).classList.remove("active");
+        if (idProx) {
+          document.getElementById(idProx).classList.add("active");
+        } else {
+          feedback.textContent += " Você terminou o quiz! 🌟";
+        }
+      } else {
+        feedback.textContent = "❌ Ops! Tente novamente.";
+        document.getElementById("planeta").style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
